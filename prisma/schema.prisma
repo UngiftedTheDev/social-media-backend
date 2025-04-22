@@ -1,0 +1,20 @@
+model User {
+  id          Int       @id @default(autoincrement())
+  username    String    @unique
+  email       String    @unique
+  password    String
+  firstname   String
+  lastname    String
+  role        String    @default("user")
+  isVerified  Boolean   @default(false)
+  course      String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  posts       Post[]
+  likes       Like[]
+  dislikes    Dislike[]
+  otps        Otp[]
+  followers   Follower[] @relation("Following")
+  following   Follower[] @relation("Followers")
+}

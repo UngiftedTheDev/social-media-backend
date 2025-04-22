@@ -1,16 +1,16 @@
 import express from "express"
-import { Prisma } from "@prisma/client"
+import { prisma } from "./src/config/database"
 require("dotenv").config();
+const {PORT} = require("./src/config/env")
 
 const app = express();
-const prisma = new PrismaClient();
 app.use(express.json());
 
 const express = require("express");
-const { PrismaClient } = require("@prisma/client");
-require("dotenv").config();
 
-const PORT = process.env.PORT || 3000
+
+
+
 
 
 app.get("/", async (req, res) => {
