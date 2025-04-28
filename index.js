@@ -2,14 +2,10 @@ import express from "express"
 import { prisma } from "./src/config/database"
 require("dotenv").config();
 const {PORT} = require("./src/config/env")
+const {SERVER_ERROR} = require('./src/constants/statusCodes')
 
 const app = express();
 app.use(express.json());
-
-const express = require("express");
-
-
-
 
 
 
@@ -18,7 +14,7 @@ app.get("/", async (req, res) => {
     const users = await prisma.user.findMany();
     res.json(users);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(ERVER_ERROR).json({ error: error.message });
   }
   finally{
     process.on("SIGINT", async () => {

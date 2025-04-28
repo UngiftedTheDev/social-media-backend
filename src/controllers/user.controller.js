@@ -1,25 +1,21 @@
 const { createUser } = require('../services/user.service');
+const { CREATED, INTERNAL_SERVER_ERROR } = require('../constants/statusCodes'); 
+const pick = require('../utils/pick');
 
 const registerUser = async (req, res) => {
-    try {
-      const user = await createUser(req.body);
-      res.status(201).json({
-        message: 'User registered successfully',
-        user: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          course: user.course,
-          role: user.role,
-          isVerified: user.isVerified,
-        }
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Registration failed' });
-    }
-  };
-  
+  const allowedFields = ["username", "firstname", "lastname", "email", "password", "course"];
+  const safeUserData = pick(req.body, allowedFields);
+
+  try {
+    const user = await createUser(safeUserData); 
+    res.status(CREATED).json({
+      message: 'User registered successfully',
+      data: user
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(INTERNAL_SERVER_ERROR).json({ error: 'Registration failed' }); 
+  }
+};
+
 module.exports = { registerUser };
